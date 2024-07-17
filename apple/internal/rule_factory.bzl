@@ -76,6 +76,11 @@ AppleTestRunnerInfo provider.
         ),
         cfg = "exec",
     ),
+    "_xcresultparser": attr.label(
+        cfg = "exec",
+        executable = True,
+        default = Label("@build_bazel_rules_apple//tools/xcresultparser"),
+    ),
     "test_filter": attr.string(
         doc = """
 Test filter string that will be passed into the test runner to select which tests will run.

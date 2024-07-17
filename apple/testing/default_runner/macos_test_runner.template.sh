@@ -47,6 +47,8 @@ trap 'rm -rf "${TEST_TMP_DIR}"' ERR EXIT
 TEST_BUNDLE_PATH="%(test_bundle_path)s"
 TEST_BUNDLE_NAME=$(basename_without_extension "$TEST_BUNDLE_PATH")
 
+XCRESULTPARSER_PATH="%(xcresultparser_path)s"
+
 if [[ "$TEST_BUNDLE_PATH" == *.xctest ]]; then
   cp -R "$TEST_BUNDLE_PATH" "$TEST_TMP_DIR"
   # Need to modify permissions as Bazel will set all files to non-writable, and
@@ -142,6 +144,8 @@ xcodebuild test-without-building \
     -destination "platform=macOS" \
     -resultBundlePath "$TEST_UNDECLARED_OUTPUTS_DIR/tests.xcresult" \
     -xctestrun "$XCTESTRUN"
+
+"$XCRESULTPARSER_PATH" -o junit "$TEST_UNDECLARED_OUTPUTS_DIR/tests.xcresult" > "$XML_OUTPUT_FILE"
 
 if [[ "${COVERAGE:-}" -ne 1 ]]; then
   # Normal tests run without coverage

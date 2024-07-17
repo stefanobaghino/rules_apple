@@ -53,10 +53,11 @@ def _get_xctestrun_template_substitutions(xcode_config):
 
     return {"%(" + k + ")s": subs[k] for k in subs}
 
-def _get_template_substitutions(xctestrun_template):
+def _get_template_substitutions(xctestrun_template, xcresultparser):
     """Returns the template substitutions for this runner."""
     subs = {
         "xctestrun_template": xctestrun_template.short_path,
+        "xcresultparser_path": xcresultparser.short_path,
     }
 
     return {"%(" + k + ")s": subs[k] for k in subs}
@@ -87,7 +88,7 @@ def _macos_test_runner_impl(ctx):
     ctx.actions.expand_template(
         template = ctx.file._test_template,
         output = ctx.outputs.test_runner_template,
-        substitutions = _get_template_substitutions(preprocessed_xctestrun_template),
+        substitutions = _get_template_substitutions(preprocessed_xctestrun_template, ctx.executable._xcresultparser),
     )
 
     return [
@@ -115,6 +116,11 @@ macos_test_runner = rule(
                 fragment = "apple",
                 name = "xcode_config_label",
             ),
+        ),
+        "_xcresultparser": attr.label(
+            cfg = "exec",
+            executable = True,
+            default = Label("@build_bazel_rules_apple//tools/xcresultparser"),
         ),
         "_xctestrun_template": attr.label(
             default = Label("@build_bazel_rules_apple//apple/testing/default_runner:macos_test_runner.template.xctestrun"),

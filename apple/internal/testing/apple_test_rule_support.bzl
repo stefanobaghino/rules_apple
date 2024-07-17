@@ -337,6 +337,10 @@ def _apple_test_rule_impl(*, ctx, requires_dossiers, test_type):
             test_bundle_target[_CoverageFilesInfo].coverage_files,
         ])
 
+    transitive_runfiles.extend([
+        depset(direct = [ctx.executable._xcresultparser]),
+    ])
+
     executable = ctx.actions.declare_file("%s" % ctx.label.name)
     ctx.actions.expand_template(
         template = runner_info.test_runner_template,

@@ -173,7 +173,7 @@ that this target depends on.
 macos_internal_ui_test_bundle = _macos_internal_ui_test_bundle
 
 macos_ui_test = rule_factory.create_apple_test_rule(
-    doc = """Builds and bundles an iOS UI `.xctest` test bundle. Runs the tests using the
+    doc = """Builds and bundles a macOS UI `.xctest` test bundle. Runs the tests using the
 provided test runner when invoked with `bazel test`. When using Tulsi to run
 tests built with this target, `runner` will not be used since Xcode is the test
 runner in that case.
@@ -185,7 +185,7 @@ Note: macOS UI tests are not currently supported in the default test runner.""",
 
 # Declare it with an underscore to hint that this is an implementation detail in bazel query-s.
 _macos_internal_unit_test_bundle = rule_factory.create_apple_rule(
-    doc = "Builds and bundles an macOS Unit Test Bundle. Internal target not to be depended upon.",
+    doc = "Builds and bundles a macOS Unit Test Bundle. Internal target not to be depended upon.",
     implementation = _macos_unit_test_bundle_impl,
     predeclared_outputs = {"archive": "%{name}.zip"},
     attrs = [

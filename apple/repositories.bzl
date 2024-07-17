@@ -148,3 +148,15 @@ def apple_rules_dependencies(ignore_version_differences = False, include_bzlmod_
         sha256 = "ae3a063c985a8633cb7eb566db21656f8db8eb9a0edb8c182312c7f0db53730d",
         ignore_version_differences = ignore_version_differences,
     )
+
+    _maybe(
+        http_archive,
+        name = "xcresultparser",
+        urls = [
+            "https://github.com/a7ex/xcresultparser/releases/download/1.6.5/xcresultparser.zip",
+        ],
+        strip_prefix = "product",
+        sha256 = "4aed28dcca662b6cc0b12d78ddbfad066311be3a9751caf97f26f55a4b82ac09",
+        build_file_content = """exports_files(["xcresultparser"])""",
+        ignore_version_differences = ignore_version_differences,
+    )
